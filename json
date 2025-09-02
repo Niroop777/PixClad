@@ -1,0 +1,12 @@
+{
+    "Effect": "Allow",
+    "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:ListBucket"
+    ],
+    "Resource": [
+        "arn:aws:s3:::pim-komatsu-bucket-nonprod",
+        "arn:aws:s3:::pim-komatsu-bucket-nonprod/dev/misc/demo_s3/*"
+    ]
+}
