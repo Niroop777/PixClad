@@ -1,0 +1,14 @@
+2025-02-13 11:07:32,531 - WARNING -  * Debugger is active!
+2025-02-13 11:07:32,537 - INFO -  * Debugger PIN: 325-499-029
+2025-02-13 11:08:04,754 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-13 11:08:04,754 - INFO - [33mPress CTRL+C to quit[0m
+2025-02-13 11:08:04,757 - INFO -  * Restarting with stat
+2025-02-13 11:08:05,194 - WARNING -  * Debugger is active!
+2025-02-13 11:08:05,198 - INFO -  * Debugger PIN: 325-499-029
+2025-02-13 11:08:28,000 - INFO -  * Detected change in 'C:\\Users\\Dell\\OneDrive\\Desktop\\pixa_clad\\app.py', reloading
+2025-02-13 11:08:28,066 - INFO -  * Restarting with stat
+2025-02-13 12:06:20,074 - INFO -  * Restarting with stat
+2025-02-13 12:06:27,846 - INFO -  * Restarting with stat
+2025-02-13 12:06:34,680 - INFO -  * Restarting with stat
+2025-02-13 12:06:36,479 - INFO -  * Restarting with stat
