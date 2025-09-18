@@ -1,11 +1,40 @@
-Flask
-Flask-SQLAlchemy
-Flask-JWT-Extended
-Flask-Cors
-tensorflow
-Pillow
-gunicorn
-google-auth
-google-auth-oauthlib
-boto3
-python-dotenv
+# --- Core Web Backend ---
+Flask==3.1.2
+flask-cors==6.0.1
+Flask-JWT-Extended==4.7.1
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.43
+gunicorn==23.0.0
+python-dotenv==1.1.1
+python-magic==0.4.27
+passlib==1.7.4
+
+# --- Utilities ---
+requests==2.32.5
+urllib3==2.5.0
+typing_extensions==4.15.0
+packaging==25.0
+
+# --- ML / AI (Optional but useful if you do embeddings or inference) ---
+numpy==2.2.6
+scikit-learn==1.7.2
+scipy==1.15.3
+torch==2.8.0
+transformers==4.56.1
+huggingface-hub==0.34.5
+sentence-transformers==5.1.0
+faiss-cpu==1.12.0
+langchain==0.3.27
+langchain-community==0.3.29
+langchain-core==0.3.76
+langchain-huggingface==0.3.1
+langchain-text-splitters==0.3.11
+langsmith==0.4.28
+orjson==3.11.3
+
+# --- Optional TensorFlow (Only if you actually use TF models) ---
+tensorflow==2.20.0
+tensorflow_cpu==2.20.0
+tf_keras==2.20.1
+tensorboard==2.20.0
+tensorboard-data-server==0.7.2
