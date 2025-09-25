@@ -3,6 +3,9 @@ import os
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+from google.auth.transport.requests import Request
+
+
 
 BASE_DIR = os.path.dirname(__file__)
 CREDENTIALS_PATH = os.path.join(BASE_DIR, "credentials.json")  # ensure this exists in repo
