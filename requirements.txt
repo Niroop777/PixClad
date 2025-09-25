@@ -4,7 +4,7 @@ Flask==3.1.2
 flask-cors==6.0.1
 Flask-JWT-Extended==4.7.1
 Flask-SQLAlchemy==3.1.1
-supabase-py
+supabase
 psycopg2-binary==2.9.9
 SQLAlchemy==2.0.43
 gunicorn==23.0.0
