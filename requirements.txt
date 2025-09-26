@@ -41,3 +41,8 @@ tensorflow_cpu==2.20.0
 tf_keras==2.20.1
 tensorboard==2.20.0
 tensorboard-data-server==0.7.2
+
+
+google-auth
+google-auth-oauthlib
+google-api-python-client
