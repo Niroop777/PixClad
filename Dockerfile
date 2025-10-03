@@ -1,17 +1,11 @@
-# ---------------------------
-# Step 1: Base Image
-# ---------------------------
+# Use official Python image
 FROM python:3.11-slim
 
-# ---------------------------
-# Step 2: Environment Settings
-# ---------------------------
+# Prevent .pyc files and enable unbuffered logging
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# ---------------------------
-# Step 3: System Dependencies
-# ---------------------------
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
@@ -20,30 +14,22 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# ---------------------------
-# Step 4: Set Working Directory
-# ---------------------------
+# Set working directory inside container
 WORKDIR /app
 
-# ---------------------------
-# Step 5: Copy & Install Python Dependencies
-# ---------------------------
-COPY requirements.txt .
+# Copy Python dependencies
+COPY backend/requirements.txt .
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ---------------------------
-# Step 6: Copy Project Files
-# ---------------------------
-COPY app ./app
-COPY run.py .
-COPY tool_classifier.h5 .
+# Copy backend application code
+COPY backend/app ./app
+COPY backend/run.py .
+COPY backend/tool_classifier.h5 .
 
-# ---------------------------
-# Step 7: Expose Backend Port
-# ---------------------------
+# Expose the port Render will use
 EXPOSE 5000
 
-# ---------------------------
-# Step 8: Run Backend
-# ---------------------------
+# Start the server using Gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]
