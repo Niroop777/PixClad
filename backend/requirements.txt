@@ -14,5 +14,4 @@ google-auth-httplib2
 google-auth-oauthlib
 
 Pillow
-google-auth-transport-requests
 gunicorn
