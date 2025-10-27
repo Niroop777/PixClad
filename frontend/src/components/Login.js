@@ -1,18 +1,35 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
+// --- NEW MUI IMPORTS ---
+import {
+    Container,
+    Box,
+    Paper,
+    Typography,
+    TextField,
+    Button,
+    CircularProgress,
+    Alert,
+    Link,
+    Grid
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from '@mui/material/Avatar';
+// --- END OF IMPORTS ---
+
 function Login() {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     const handleLogin = async (event) => {
         event.preventDefault();
         setLoading(true);
-        setMessage('');
+        setError('');
 
         const { error } = await supabase.auth.signInWithPassword({
             email: email,
@@ -20,49 +37,89 @@ function Login() {
         });
 
         if (error) {
-            setMessage('Error: ' + error.message);
+            setError(error.message);
         } else {
-            // If login is successful, the onAuthStateChange listener in App.js
-            // will detect the new session and redirect to the dashboard.
-            navigate('/dashboard');
+            navigate('/dashboard'); // Redirect to dashboard on success
         }
         setLoading(false);
     };
 
     return (
-        <div>
-            <h2>Login to PixClad</h2>
-            <form onSubmit={handleLogin}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{margin: '5px', padding: '8px'}} 
-                />
-                <br />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    style={{margin: '5px', padding: '8px'}} 
-                />
-                <br />
-                <button type="submit" disabled={loading} style={{margin: '10px', padding: '10px 20px'}}>
-                    {loading ? 'Logging in...' : 'Login'}
-                </button>
-            </form>
-            {message && <p>{message}</p>}
-            <p>
-                Don't have an account? <a href="/register">Register here</a>
-            </p>
-            <p>
-                <a href="/forgot-password">Forgot your password?</a> {/* <-- Add this link */}
-            </p>
-        </div>
+        <Container component="main" maxWidth="xs">
+            <Paper 
+                elevation={6}
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: 4,
+                    borderRadius: 2
+                }}
+            >
+                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign in
+                </Typography>
+                <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    
+                    {error && (
+                        <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
+                            {error}
+                        </Alert>
+                    )}
+
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2, height: '48px' }}
+                        disabled={loading}
+                    >
+                        {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
+                    </Button>
+                    
+                    <Grid container>
+                        <Grid item xs>
+                            <Link component={RouterLink} to="/forgot-password" variant="body2">
+                                Forgot password?
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link component={RouterLink} to="/register" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Paper>
+        </Container>
     );
 }
 

@@ -1,67 +1,133 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient'; // Import our supabase client
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+
+// --- NEW MUI IMPORTS ---
+import {
+    Container,
+    Box,
+    Paper,
+    Typography,
+    TextField,
+    Button,
+    CircularProgress,
+    Alert,
+    Link,
+    Grid
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from '@mui/material/Avatar';
+// --- END OF IMPORTS ---
 
 function Register() {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     const handleRegister = async (event) => {
         event.preventDefault();
         setLoading(true);
+        setError('');
         setMessage('');
 
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
         });
 
         if (error) {
-            setMessage('Error: ' + error.message);
-        } else {
-            setMessage('Registration successful! Please check your email for a verification link.');
-            // Optionally, you can redirect the user after a delay
-            setTimeout(() => {
-                navigate('/login');
-            }, 3000);
+            setError(error.message);
+        } else if (data.user) {
+            // Check if user is already confirmed (e.g., in Supabase settings)
+            if (data.user.email_confirmed_at) {
+                setMessage('Registration successful! Redirecting to login...');
+                setTimeout(() => navigate('/login'), 2000);
+            } else {
+                setMessage('Registration successful! Please check your email to verify your account.');
+            }
         }
         setLoading(false);
     };
 
     return (
-        <div>
-            <h2>Register for PixClad</h2>
-            <form onSubmit={handleRegister}>
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{margin: '5px', padding: '8px'}} 
-                />
-                <br />
-                <input 
-                    type="password" 
-                    placeholder="Password (at least 6 characters)" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    style={{margin: '5px', padding: '8px'}} 
-                />
-                <br />
-                <button type="submit" disabled={loading} style={{margin: '10px', padding: '10px 20px'}}>
-                    {loading ? 'Registering...' : 'Register'}
-                </button>
-            </form>
-            {message && <p>{message}</p>}
-            <p>
-                Already have an account? <a href="/login">Login here</a>
-            </p>
-        </div>
+        <Container component="main" maxWidth="xs">
+            <Paper 
+                elevation={6}
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: 4,
+                    borderRadius: 2
+                }}
+            >
+                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign up
+                </Typography>
+                <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 3 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="new-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    
+                    {error && (
+                        <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
+                            {error}
+                        </Alert>
+                    )}
+                    {message && (
+                        <Alert severity="success" sx={{ mt: 2, width: '100%' }}>
+                            {message}
+                        </Alert>
+                    )}
+
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2, height: '48px' }}
+                        disabled={loading}
+                    >
+                        {loading ? <CircularProgress size={24} color="inherit" /> : "Sign Up"}
+                    </Button>
+                    
+                    <Grid container justifyContent="flex-end">
+                        <Grid item>
+                            <Link component={RouterLink} to="/login" variant="body2">
+                                {"Already have an account? Sign in"}
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Paper>
+        </Container>
     );
 }
 
