@@ -19,7 +19,7 @@ client_config = {
         "client_id": Config.GOOGLE_CLIENT_ID, "project_id": "pixclad-v2",
         "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_secret": Config.GOOGLE_CLIENT_SECRET,
-        "redirect_uris": ["http://localhost:5001/auth/gdrive/callback"]
+        "redirect_uris": [Config.GOOGLE_REDIRECT_URI]
     }
 }
 
@@ -56,7 +56,7 @@ def gdrive_callback():
     flow.fetch_token(authorization_response=request.url)
     credentials = flow.credentials
     session['credentials'] = {'token': credentials.token, 'refresh_token': credentials.refresh_token, 'token_uri': credentials.token_uri, 'client_id': credentials.client_id, 'client_secret': credentials.client_secret, 'scopes': credentials.scopes}
-    return redirect("http://localhost:3000/dashboard")
+    return redirect(f"{Config.FRONTEND_URL}/dashboard")
 
 @gdrive_blueprint.route('/files')
 def list_gdrive_files():
