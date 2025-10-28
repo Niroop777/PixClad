@@ -42,7 +42,7 @@ def make_session_permanent():
 
 
 # --- Endpoint for Uploads (Updated) ---
-@app.route('/api/process-upload', methods=['POST'])
+@app.route('/process-upload', methods=['POST'])
 def process_upload():
     # Get the destination from the form data (default to 'local')
     destination = request.form.get('destination', 'local')

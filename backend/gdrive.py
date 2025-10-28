@@ -39,7 +39,7 @@ def upload_file_to_gdrive(service, file_path, folder_name):
 
 @gdrive_blueprint.route('/login')
 def gdrive_login():
-    flow = Flow.from_client_config(client_config, scopes=SCOPES, redirect_uri=url_for('gdrive.gdrive_callback', _external=True))
+    flow = Flow.from_client_config(client_config, scopes=SCOPES, redirect_uri=Config.GOOGLE_REDIRECT_URI)
     authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes='true')
     session['state'] = state
     return redirect(authorization_url)
@@ -51,7 +51,7 @@ def gdrive_callback():
         client_config,
         scopes=SCOPES,
         state=state,
-        redirect_uri=url_for('gdrive.gdrive_callback', _external=True)
+        redirect_uri=Config.GOOGLE_REDIRECT_URI
     )
     flow.fetch_token(authorization_response=request.url)
     credentials = flow.credentials
