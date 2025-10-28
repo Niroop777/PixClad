@@ -4,7 +4,6 @@ flask_login
 celery
 redis
 ultralytics
-torch
 python-dotenv
 flask_cors
 supabase
@@ -15,3 +14,8 @@ google-auth-oauthlib
 
 Pillow
 gunicorn
+
+torch==2.8.0+cpu
+torchvision==0.23.0+cpu
+
+--extra-index-url https://download.pytorch.org/whl/cpu
